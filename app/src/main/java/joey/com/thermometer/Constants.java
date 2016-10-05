@@ -3,6 +3,9 @@ package joey.com.thermometer;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Constants
+ */
 public class Constants {
 
     public static final String FAHRENHEITSUFFIX = "\u2109";

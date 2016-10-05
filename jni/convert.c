@@ -43,22 +43,16 @@
 #define ALOGI(...) __android_log_print(ANDROID_LOG_INFO, "Tag", __VA_ARGS__)
 
 static jfloatArray native_convert(JNIEnv* env, jclass clazz, jfloatArray arr, jboolean ctof) {
-    ALOGI("Convert the temperatures");
+    ALOGI("Convert the temperature array");
     int len = (*env)->GetArrayLength(env, arr);
-    // ALOGI("Length: d%", len);
     if (len == 0) {
         ALOGI("Length is 0");
         return arr;
     }
-    //jint* p = (*env)->GetIntArrayElements(env, arr, 0);
 
-    //if (p == NULL) {
-    //    ALOGI("Get array failed");
-    //    return arr;
-    //}
     jfloat* carr = (*env)->GetFloatArrayElements(env, arr, NULL);
     jfloatArray result = (*env)->NewFloatArray(env, len);
-    // (*env)->GetIntArrayRegion(env, buffer, 0, len, arr);
+
     float buffer[5];
 
     int i = 0;
@@ -77,8 +71,20 @@ static jfloatArray native_convert(JNIEnv* env, jclass clazz, jfloatArray arr, jb
     return result;
 }
 
+static jfloat native_convert_single(JNIEnv* en, jclass clazz, jfloat input, jboolean ctof) {
+    ALOGI("Convert the single temperature");
+    jfloat result = 0.0;
+    if (ctof == JNI_TRUE) {
+        result = input * 1.8 + 32.0;
+    } else {
+        result = (input - 32.0) / 1.8;
+    }
+    return result;
+}
+
 static JNINativeMethod method_table[] = {
     {"convert", "([FZ)[F", (void*) native_convert},
+    {"convertSingle", "(FZ)F", (void*) native_convert_single},
 };
 
 static int registerNativeMethods(JNIEnv* env, const char* className, JNINativeMethod* gMethods, int numMethods) {

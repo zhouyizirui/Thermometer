@@ -9,27 +9,34 @@ import android.util.Log;
 
 import java.util.List;
 
+/**
+ * A helper to acquire ambient temperature
+ * Need to work on phones with temperature sensor
+ */
 public class AmbientTemperature {
-
+    /** Context */
     private Context mContext;
-
+    /** SensorManager */
     private SensorManager mSensorManager;
-
+    /** Sensor */
     private Sensor mTempSensor;
-
+    /** SensorEventListener */
     private SensorEventListener mTempListener;
-
+    /** Interface to pass result to outside */
     private IAmbientTemperatureListener mAmbientListener;
 
+    /**
+     * Constructor with one parameter
+     * @param context context
+     */
     public AmbientTemperature(Context context) {
         mContext = context;
         init();
     }
 
-    public void setListener(IAmbientTemperatureListener listener) {
-        mAmbientListener = listener;
-    }
-
+    /**
+     * Init the sensor and listeners
+     */
     private void init() {
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
@@ -45,10 +52,24 @@ public class AmbientTemperature {
         mSensorManager.registerListener(mTempListener, mTempSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+    /**
+     * Set the outside listener
+     * @param listener listener
+     */
+    public void setListener(IAmbientTemperatureListener listener) {
+        mAmbientListener = listener;
+    }
+
+    /**
+     * Release the listener in case of memory leak
+     */
     public void release() {
         mSensorManager.unregisterListener(mTempListener);
     }
 
+    /**
+     * TemperatureListener to acquire the temperature in real time
+     */
     private class TemperatureListener implements SensorEventListener {
 
         @Override

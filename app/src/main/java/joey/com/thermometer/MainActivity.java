@@ -6,16 +6,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * The MainActivity to display temperatures
+ */
 public class MainActivity extends AppCompatActivity {
-
+    /** TextView to show the current temperature */
     private TextView mAmbientTemperatureValue;
-
+    /** AmbientTemperature manager */
     private AmbientTemperature mAmbientTemperatureManager;
-
+    /** Bottom layout */
     private WeekTemperatureLayout mWeekLayout;
-
+    /** Button */
     private Button mConvert;
-
+    /** Current temperature */
     private float mCurrentTemperature;
 
     @Override
@@ -32,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         mAmbientTemperatureManager.release();
     }
 
+    /**
+     * Init the views in activity
+     */
     private void initViews() {
         mAmbientTemperatureValue = (TextView) findViewById(R.id.ambient_temperature);
         mAmbientTemperatureManager = new AmbientTemperature(this);
@@ -55,7 +61,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTemperatureChanged(float temperature) {
                 mCurrentTemperature = temperature;
-                mAmbientTemperatureValue.setText(mCurrentTemperature + Constants.CELSIUSSUFFIX);
+                if (mWeekLayout.getIsCelsius()) {
+                    mAmbientTemperatureValue.setText(mCurrentTemperature + Constants.CELSIUSSUFFIX);
+                } else {
+                    mAmbientTemperatureValue.setText(RandomGenerator.roundFloat(TemperatureConverter.convertSingle(mCurrentTemperature, true))
+                            + Constants.FAHRENHEITSUFFIX);
+                }
+
             }
         });
     }

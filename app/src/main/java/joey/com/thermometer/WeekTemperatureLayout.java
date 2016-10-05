@@ -11,37 +11,64 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A horizontal linearlayout to hold temperatures of the week
+ */
 public class WeekTemperatureLayout extends LinearLayout {
-
+    /** Views to hold and manage */
     private List<ViewHolder> mViews = new ArrayList<>();
-
+    /** Random temperatures */
     private float[] mTemperatures;
-
+    /** Is in celsius mode */
     private boolean mIsCelsius;
-
+    /** Context */
     private Context mContext;
 
+    /**
+     * Constructor with one parameter
+     * @param context context
+     */
     public WeekTemperatureLayout(Context context) {
         super(context);
         init(context);
     }
 
+    /**
+     * Constructor with two parameters
+     * @param context context
+     * @param attrs attrs
+     */
     public WeekTemperatureLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
+    /**
+     * Constructor with three parameters
+     * @param context context
+     * @param attrs attrs
+     * @param defStyleAttr defStyleAttr
+     */
     public WeekTemperatureLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
+    /**
+     * Init the layout
+     * @param context
+     */
     private void init(Context context) {
         mContext = context;
         mIsCelsius = true;
         setOrientation(LinearLayout.HORIZONTAL);
     }
 
+    /**
+     * Set the days and the temperatures to the views
+     * @param days days
+     * @param tems tems
+     */
     public void setViews(List<String> days, List<Float> tems) {
         if (days.size() != tems.size()) {
             throw new IllegalArgumentException("Size of days and tems should be the same");
@@ -80,6 +107,10 @@ public class WeekTemperatureLayout extends LinearLayout {
         }
     }
 
+    /**
+     * Convert temperature function
+     * call this method to convert from Celsius to Fahrenheit, vice versa.
+     */
     public void convertTemperatures() {
         mTemperatures = TemperatureConverter.convert(mTemperatures, mIsCelsius);
         RandomGenerator.roundFloats(mTemperatures);
@@ -87,6 +118,9 @@ public class WeekTemperatureLayout extends LinearLayout {
         notifyDataChanged();
     }
 
+    /**
+     * Change the corresponding views according the temperature conversion
+     */
     private void notifyDataChanged() {
         String suffix = mIsCelsius ? Constants.CELSIUSSUFFIX : Constants.FAHRENHEITSUFFIX;
         for (int i = 0; i < mTemperatures.length; i++) {
@@ -94,10 +128,17 @@ public class WeekTemperatureLayout extends LinearLayout {
         }
     }
 
+    /**
+     * Get if is current in Celsius display mode
+     * @return mIsCelsius
+     */
     public boolean getIsCelsius() {
         return mIsCelsius;
     }
 
+    /**
+     * ViewHolder to hold the day and temperature
+     */
     class ViewHolder {
         TextView day;
         TextView tem;
