@@ -1,5 +1,5 @@
 //
-// Created by zhouyizirui on 10/5/16.
+// Created by Joey Zhou on 10/5/16.
 //
 
 #include <string.h>
@@ -41,22 +41,30 @@
 #define JNIREG_CLASS "joey/com/thermometer/TemperatureConverter"
 #define NELEM(x) ((int) (sizeof(x) / sizeof((x)[0])))
 #define ALOGI(...) __android_log_print(ANDROID_LOG_INFO, "Tag", __VA_ARGS__)
+#define ALOGE(...) __android_log_print(ANDROID_LOG_ERROR, "Tag", __VA_ARGS__)
 
 static jfloatArray native_convert(JNIEnv* env, jclass clazz, jfloatArray arr, jboolean ctof) {
-    ALOGI("Convert the temperature array");
+    ALOGI("Convert temperature array");
     int len = (*env)->GetArrayLength(env, arr);
-    if (len == 0) {
-        ALOGI("Length is 0");
-        return arr;
+    // Check the length of the array
+    if (len == 0 || len > 256) {
+        ALOGE("Length of the array is not valid");
+        return NULL;
     }
 
     jfloat* carr = (*env)->GetFloatArrayElements(env, arr, NULL);
     jfloatArray result = (*env)->NewFloatArray(env, len);
 
-    float buffer[5];
+    // No memory left
+    if (result == NULL) {
+        ALOGE("No memory left to convert temperatures");
+        return NULL;
+    }
 
+    float buffer[256];
     int i = 0;
 
+    // Convert the temperatures one by one
     for (; i < len; i++) {
         if (ctof == JNI_TRUE) {
             buffer[i] = carr[i] * 1.8 + 32.0;
@@ -72,7 +80,7 @@ static jfloatArray native_convert(JNIEnv* env, jclass clazz, jfloatArray arr, jb
 }
 
 static jfloat native_convert_single(JNIEnv* en, jclass clazz, jfloat input, jboolean ctof) {
-    ALOGI("Convert the single temperature");
+    ALOGI("Convert a single temperature");
     jfloat result = 0.0;
     if (ctof == JNI_TRUE) {
         result = input * 1.8 + 32.0;

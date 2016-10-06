@@ -81,11 +81,11 @@ public class WeekTemperatureLayout extends LinearLayout {
             TextView dayView = new TextView(mContext);
             dayView.setText(days.get(i));
             dayView.setTextColor(Color.parseColor("#333333"));
-            dayView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
+            dayView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
             TextView temView = new TextView(mContext);
             temView.setText(tems.get(i) + Constants.CELSIUSSUFFIX);
             temView.setTextColor(Color.parseColor("#333333"));
-            temView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
+            temView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
             mTemperatures[i] = tems.get(i);
 
             ViewHolder viewHolder = new ViewHolder();
@@ -113,9 +113,11 @@ public class WeekTemperatureLayout extends LinearLayout {
      */
     public void convertTemperatures() {
         mTemperatures = TemperatureConverter.convert(mTemperatures, mIsCelsius);
-        RandomGenerator.roundFloats(mTemperatures);
-        mIsCelsius = !mIsCelsius;
-        notifyDataChanged();
+        if (mTemperatures != null) {
+            RandomGenerator.roundFloats(mTemperatures);
+            mIsCelsius = !mIsCelsius;
+            notifyDataChanged();
+        }
     }
 
     /**

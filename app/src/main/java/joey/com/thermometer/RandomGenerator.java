@@ -12,6 +12,8 @@ public class RandomGenerator {
     private static Random random = new Random();
     /** Generated data list */
     private static ArrayList<Float> dataList = new ArrayList<>();
+    /** Generated date list */
+    private static ArrayList<String> dateList = new ArrayList<>();
     /** Min of temperature in CELSIUS */
     public static final float MIN = -40f;
     /** Max of temperature in CELSIUS */
@@ -30,6 +32,19 @@ public class RandomGenerator {
             dataList.add(candidate);
         }
         return dataList;
+    }
+
+    /**
+     * Generate week days
+     * @param n number of week days
+     * @return result
+     */
+    public static ArrayList<String> generateDates(int n) {
+        dateList.clear();
+        for (int i = 0; i < n; i++) {
+            dateList.add(Constants.DATES[i % 8]);
+        }
+        return dateList;
     }
 
     /**

@@ -1,8 +1,5 @@
 package joey.com.thermometer;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Constants
  */
@@ -12,6 +9,6 @@ public class Constants {
 
     public static final String CELSIUSSUFFIX = "\u2103";
 
-    public static final List<String> days = Arrays.asList("Mon", "Tue", "Wed", "Thu", "Fri");
+    public static final String[] DATES = new String[]{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
 }

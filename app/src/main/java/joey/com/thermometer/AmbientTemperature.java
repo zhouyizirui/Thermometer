@@ -6,9 +6,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
-
-import java.util.List;
 
 /**
  * A helper to acquire ambient temperature
@@ -40,6 +37,7 @@ public class AmbientTemperature {
     public void init() {
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         PackageManager packageManager = mContext.getPackageManager();
+
         // Check if the temperature sensor exists
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_AMBIENT_TEMPERATURE)) {
             mTempSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);

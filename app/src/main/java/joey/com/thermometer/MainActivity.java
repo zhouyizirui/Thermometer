@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private WeekTemperatureLayout mWeekLayout;
     /** Button */
     private Button mConvert;
-    /** Current temperature */
+    /** Current default temperature */
     private float mCurrentTemperature = 25.0f;
 
     @Override
@@ -45,10 +45,13 @@ public class MainActivity extends AppCompatActivity {
      * Init the views in activity
      */
     private void initViews() {
+        // Change the number here to generate more days
+        int numOfDays = 5;
+
         mAmbientTemperatureValue = (TextView) findViewById(R.id.ambient_temperature);
         mAmbientTemperatureManager = new AmbientTemperature(this);
         mWeekLayout = (WeekTemperatureLayout) findViewById(R.id.week_temperature);
-        mWeekLayout.setViews(Constants.days, RandomGenerator.generateDatas(5));
+        mWeekLayout.setViews(RandomGenerator.generateDates(numOfDays), RandomGenerator.generateDatas(numOfDays));
         mConvert = (Button) findViewById(R.id.convert_temperature);
 
 
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 setAmbientTemperature();
             }
         });
+
         setAmbientTemperature();
     }
 
@@ -81,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
         if (mWeekLayout.getIsCelsius()) {
             mAmbientTemperatureValue.setText(mCurrentTemperature + Constants.CELSIUSSUFFIX);
         } else {
-            mAmbientTemperatureValue.setText(RandomGenerator.roundFloat(TemperatureConverter.convertSingle(mCurrentTemperature, true))
+            mAmbientTemperatureValue.setText(RandomGenerator.roundFloat(TemperatureConverter
+                    .convertSingle(mCurrentTemperature, true))
                     + Constants.FAHRENHEITSUFFIX);
         }
     }
