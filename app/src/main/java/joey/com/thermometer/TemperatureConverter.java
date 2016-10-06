@@ -2,7 +2,7 @@ package joey.com.thermometer;
 
 /**
  * TemperatureConverter with two native functions
- * convert(): convert an array of float numbers
+ * convert(): convert an array of float numbers (five limited)
  * convertSingle(): convert a single float number
  */
 public class TemperatureConverter {

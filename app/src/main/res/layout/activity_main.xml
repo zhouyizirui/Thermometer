@@ -15,12 +15,22 @@
         android:layout_height="0dp"
         android:layout_weight="5">
         <TextView
-            android:id="@+id/ambient_temperature"
+            android:id="@+id/ambient_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="54dp"
+            android:layout_marginTop="40dp"
+            android:textSize="46dp"
             android:textColor="#333333"
-            android:layout_centerInParent="true"
+            android:text="@string/current"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:id="@+id/ambient_temperature"
+            android:layout_below="@id/ambient_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="46dp"
+            android:textColor="#333333"
+            android:layout_centerHorizontal="true"
             />
     </RelativeLayout>
 

@@ -1,6 +1,7 @@
 package joey.com.thermometer;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -31,25 +32,20 @@ public class AmbientTemperature {
      */
     public AmbientTemperature(Context context) {
         mContext = context;
-        init();
     }
 
     /**
      * Init the sensor and listeners
      */
-    private void init() {
+    public void init() {
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
-        List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
-        for (Sensor sensor : deviceSensors) {
-            Log.i("sensor", "------------------");
-            Log.i("sensor", sensor.getName());
-            Log.i("sensor", sensor.getVendor());
-            Log.i("sensor", Integer.toString(sensor.getType()));
-            Log.i("sensor", "------------------");
+        PackageManager packageManager = mContext.getPackageManager();
+        // Check if the temperature sensor exists
+        if (packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_AMBIENT_TEMPERATURE)) {
+            mTempSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+            mTempListener = new TemperatureListener();
+            mSensorManager.registerListener(mTempListener, mTempSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
-        mTempSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
-        mTempListener = new TemperatureListener();
-        mSensorManager.registerListener(mTempListener, mTempSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     /**
@@ -64,7 +60,9 @@ public class AmbientTemperature {
      * Release the listener in case of memory leak
      */
     public void release() {
-        mSensorManager.unregisterListener(mTempListener);
+        if (mSensorManager != null && mTempListener != null) {
+            mSensorManager.unregisterListener(mTempListener);
+        }
     }
 
     /**

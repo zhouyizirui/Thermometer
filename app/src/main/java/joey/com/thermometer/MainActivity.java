@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     /** Button */
     private Button mConvert;
     /** Current temperature */
-    private float mCurrentTemperature;
+    private float mCurrentTemperature = 25.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initViews();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAmbientTemperatureManager.init();
     }
 
     @Override
@@ -50,10 +56,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mWeekLayout.convertTemperatures();
+                setAmbientTemperature();
                 if (mWeekLayout.getIsCelsius()) {
-                    mConvert.setText("Celsius");
+                    mConvert.setText(R.string.celsius);
                 } else {
-                    mConvert.setText("Fahrenheit");
+                    mConvert.setText(R.string.fahrenheit);
                 }
             }
         });
@@ -61,15 +68,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTemperatureChanged(float temperature) {
                 mCurrentTemperature = temperature;
-                if (mWeekLayout.getIsCelsius()) {
-                    mAmbientTemperatureValue.setText(mCurrentTemperature + Constants.CELSIUSSUFFIX);
-                } else {
-                    mAmbientTemperatureValue.setText(RandomGenerator.roundFloat(TemperatureConverter.convertSingle(mCurrentTemperature, true))
-                            + Constants.FAHRENHEITSUFFIX);
-                }
-
+                setAmbientTemperature();
             }
         });
+        setAmbientTemperature();
+    }
+
+    /**
+     * Set the ambient temperature value
+     */
+    private void setAmbientTemperature() {
+        if (mWeekLayout.getIsCelsius()) {
+            mAmbientTemperatureValue.setText(mCurrentTemperature + Constants.CELSIUSSUFFIX);
+        } else {
+            mAmbientTemperatureValue.setText(RandomGenerator.roundFloat(TemperatureConverter.convertSingle(mCurrentTemperature, true))
+                    + Constants.FAHRENHEITSUFFIX);
+        }
     }
 
     static {
