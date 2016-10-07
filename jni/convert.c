@@ -40,8 +40,8 @@
 
 #define JNIREG_CLASS "joey/com/thermometer/TemperatureConverter"
 #define NELEM(x) ((int) (sizeof(x) / sizeof((x)[0])))
-#define ALOGI(...) __android_log_print(ANDROID_LOG_INFO, "Tag", __VA_ARGS__)
-#define ALOGE(...) __android_log_print(ANDROID_LOG_ERROR, "Tag", __VA_ARGS__)
+#define ALOGI(...) __android_log_print(ANDROID_LOG_INFO, "Thermometer", __VA_ARGS__)
+#define ALOGE(...) __android_log_print(ANDROID_LOG_ERROR, "Thermometer", __VA_ARGS__)
 
 static jfloatArray native_convert(JNIEnv* env, jclass clazz, jfloatArray arr, jboolean ctof) {
     ALOGI("Convert temperature array");

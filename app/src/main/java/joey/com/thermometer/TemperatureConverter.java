@@ -9,7 +9,7 @@ public class TemperatureConverter {
 
     /**
      * convert an array of floats
-     * @param arr input arr
+     * @param arr input arr (Up to 256 numbers)
      * @param isCTof true if we are convert Celsius to Fahrenheit, false if we perform the opposite action
      * @return converted array or null if something bad occurs
      */
