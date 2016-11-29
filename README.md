@@ -1,6 +1,6 @@
 Thermometer
 =================
-Thermometer assignment
+Thermometer assignment.
 
 Features:
 * Get the ambient temperature around smart phone
